@@ -1,0 +1,13 @@
+[package]
+name = "zkboo-profiling"
+version = "0.1.0"
+edition = "2024"
+description = "Profiling backend for ZKBoo circuits."
+license = "LGPL-3.0-or-later"
+documentation = "https://docs.rs/zkboo-profiling"
+repository = "https://github.com/zkboo/zkboo-profiling"
+keywords = ["zk", "zero-knowledge", "zkboo"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+zkboo = "0.1.0"
