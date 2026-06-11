@@ -6,5 +6,7 @@
 mod backend;
 mod functions;
 
-pub use backend::{GateCounts, ProfilingBackend, ProfilingData};
+pub use backend::{
+    GateCounts, MemoryUsage, ProfilingBackend, ProfilingData, ResponseData, ViewsData,
+};
 pub use functions::profile;

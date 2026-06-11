@@ -236,6 +236,16 @@ impl ProfilingData {
         };
     }
 
+    /// Estimated serialised size of a single proof response, in bytes.
+    pub fn response_size<D: Digest, S: Seed>(&self) -> usize {
+        return self.response_data().mem_usage::<D, S>().total();
+    }
+
+    /// Estimated serialised size of a full proof of `num_iters` responses, in bytes.
+    pub fn proof_size<D: Digest, S: Seed>(&self, num_iters: usize) -> usize {
+        return self.response_size::<D, S>() * num_iters;
+    }
+
     /// Memory usage for the circuit state, based on the maximum state size during execution.
     pub fn state_mem_usage(&self) -> MemoryUsage {
         return MemoryUsage::from_num_words(self.state_size);
