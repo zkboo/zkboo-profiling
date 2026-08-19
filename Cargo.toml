@@ -11,3 +11,9 @@ categories = ["cryptography", "no-std"]
 
 [dependencies]
 zkboo = "0.1.0"
+
+[features]
+u16 = ["zkboo/u16"]
+u32 = ["zkboo/u32"]
+u64 = ["zkboo/u64"]
+u128 = ["zkboo/u128"]
