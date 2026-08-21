@@ -1,6 +1,6 @@
 [package]
 name = "zkboo-profiling"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 description = "Profiling backend for ZKBoo circuits."
 license = "LGPL-3.0-or-later"
@@ -10,7 +10,7 @@ keywords = ["zk", "zero-knowledge", "zkboo"]
 categories = ["cryptography", "no-std"]
 
 [dependencies]
-zkboo = "0.1.0"
+zkboo = "1.0.0"
 
 [features]
 u16 = ["zkboo/u16"]
