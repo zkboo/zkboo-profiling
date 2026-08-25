@@ -11,7 +11,7 @@
 
 #[cfg(feature = "u64")]
 use zkboo::{
-    backend::{Backend, Frontend},
+    backend::{Backend, Frontend, WordRef},
     circuit::Circuit,
     word::CompositeWord,
 };
@@ -47,4 +47,36 @@ fn test_wide_mul_256_and_msg_size() {
         and_msg_size, 2056,
         "wide_mul AND-message count changed (expected 2 ANDs/row + final add for a 256-bit product)"
     );
+}
+
+/// Squares a 256-bit word two ways: the dedicated squarer, and the multiplier.
+#[cfg(feature = "u64")]
+struct Square {
+    dedicated: bool,
+}
+
+#[cfg(feature = "u64")]
+impl Circuit for Square {
+    fn exec<B: Backend>(&self, fe: &Frontend<B>) {
+        let a: WordRef<B, u64, 4> = fe.input(CompositeWord::<u64, 4>::MAX);
+        let (low, high) = if self.dedicated {
+            a.wide_square()
+        } else {
+            a.clone().wide_mul(a)
+        };
+        fe.output(low);
+        fe.output(high);
+    }
+}
+
+#[cfg(feature = "u64")]
+#[test]
+fn squaring_costs_a_third_less_than_multiplying() {
+    // `wide_mul` costs `2N·(W·N + 1)` messages exactly — 2,056 at `u64 × 4`. The squarer's
+    // partial-product rows narrow from four limbs to one as the square is built, at the cost of
+    // the additions that combine its three parts at the end.
+    let squared = profile(&Square { dedicated: true }).and_msg_size().sum();
+    let multiplied = profile(&Square { dedicated: false }).and_msg_size().sum();
+    assert_eq!(multiplied, 2_056, "wide_mul cost changed");
+    assert_eq!(squared, 1_332, "wide_square cost changed");
 }
